@@ -1,5 +1,6 @@
 // create divs
 const container = document.getElementById("container");
+const main = document.getElementById("main");
 let rows = document.getElementsByClassName("gridRow");
 let boxes = document.getElementsByClassName("cell");
 
@@ -51,13 +52,24 @@ randomButton.addEventListener("click", function () {
   }
 });
 
-// for (const cell of cells) {
-//   cell.addEventListener("mouseover", function () {
-//     cell.classList.add("active");
-//     cell.style.backgroundColor = `rgb(
-//         ${Math.floor(Math.random() * 256)}
-//         ${Math.floor(Math.random() * 256)}
-//         ${Math.floor(Math.random() * 256)}
-//     )`;
-//   });
-// }
+const size = document.getElementById("grid-size");
+
+size.addEventListener("click", function () {
+  let sizing = prompt("Enter a new grid size: (max: 100)");
+  console.log(sizing);
+
+  if (!isNaN(sizing) && sizing < 100) {
+    console.log("good");
+    let errorMessasge = document.querySelector(".error");
+    if (errorMessasge) {
+      main.removeChild(errorMessasge);
+    }
+  } else {
+    console.log("Please enter a valid number under 100.");
+    const errorMessasge = document.createElement("p");
+    errorMessasge.classList.add("error");
+    errorMessasge.textContent = "Please enter a valid number under 100.";
+    errorMessasge.style.color = "red";
+    main.appendChild(errorMessasge);
+  }
+});
