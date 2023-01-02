@@ -21,6 +21,7 @@ function makeColumns(cellNum) {
   for (i = 0; i < rows.length; i++) {
     for (j = 0; j < cellNum; j++) {
       let newCell = document.createElement("div");
+
       rows[j].appendChild(newCell).className = "cell";
     }
   }
@@ -57,8 +58,17 @@ size.addEventListener("click", function () {
 // Reset Canvas
 window.onload = function () {
   const cells = document.getElementsByClassName("cell");
+  const reset = document.getElementById("clear-grid");
   const blackButton = document.getElementById("black-button");
   const randomButton = document.getElementById("random-button");
+  const eraser = document.getElementById("eraser");
+
+  reset.addEventListener("click", function () {
+    for (const cell of cells) {
+      cell.classList.remove("active");
+      cell.style.backgroundColor = "white";
+    }
+  });
 
   blackButton.addEventListener("click", function () {
     for (const cell of cells) {
@@ -82,12 +92,12 @@ window.onload = function () {
     }
   });
 
-  const clear = document.getElementById("clear-grid");
-
-  clear.addEventListener("click", function () {
+  eraser.addEventListener("click", function () {
     for (const cell of cells) {
-      cell.classList.remove("active");
-      cell.style.backgroundColor = "white";
+      cell.addEventListener("mouseover", function () {
+        cell.classList.remove("active");
+        cell.style.backgroundColor = "white";
+      });
     }
   });
 };
