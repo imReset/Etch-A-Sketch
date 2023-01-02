@@ -8,3 +8,7 @@
   display: inline-block;
   margin-right: 2px;
 }
+
+#grid-size {
+  margin-bottom: 25px;
+}

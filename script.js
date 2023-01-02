@@ -1,5 +1,6 @@
 // create divs
 const container = document.getElementById("container");
+const main = document.getElementById("main");
 let rows = document.getElementsByClassName("gridRow");
 let boxes = document.getElementsByClassName("cell");
 
@@ -25,39 +26,68 @@ function makeColumns(cellNum) {
   }
 }
 
-const cells = document.getElementsByClassName("cell");
-const blackButton = document.getElementById("black-button");
-const randomButton = document.getElementById("random-button");
+const size = document.getElementById("grid-size");
 
-blackButton.addEventListener("click", function () {
-  for (const cell of cells) {
-    cell.addEventListener("mouseover", function () {
-      cell.classList.add("active");
-      cell.style.backgroundColor = "black";
-    });
+size.addEventListener("click", function () {
+  let sizing = prompt("Enter a new grid size: (max: 64)");
+  console.log(sizing);
+
+  let errorMessasge = document.querySelector(".error");
+  if (!isNaN(sizing) && sizing < 65) {
+    if (errorMessasge) {
+      main.removeChild(errorMessasge);
+    }
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    makeRows(sizing);
+    makeColumns(sizing);
+  } else {
+    console.log("Please enter a valid number under 65.");
+    if (!errorMessasge) {
+      const errorMessasge = document.createElement("p");
+      errorMessasge.classList.add("error");
+      errorMessasge.textContent = "Please enter a valid number under 100.";
+      errorMessasge.style.color = "red";
+      main.appendChild(errorMessasge);
+    }
   }
 });
 
-randomButton.addEventListener("click", function () {
-  for (const cell of cells) {
-    cell.addEventListener("mouseover", function () {
-      cell.classList.add("active");
-      cell.style.backgroundColor = `rgb(
-        ${Math.floor(Math.random() * 256)},
-        ${Math.floor(Math.random() * 256)},
-        ${Math.floor(Math.random() * 256)}
-      )`;
-    });
-  }
-});
+// Reset Canvas
+window.onload = function () {
+  const cells = document.getElementsByClassName("cell");
+  const blackButton = document.getElementById("black-button");
+  const randomButton = document.getElementById("random-button");
 
-// for (const cell of cells) {
-//   cell.addEventListener("mouseover", function () {
-//     cell.classList.add("active");
-//     cell.style.backgroundColor = `rgb(
-//         ${Math.floor(Math.random() * 256)}
-//         ${Math.floor(Math.random() * 256)}
-//         ${Math.floor(Math.random() * 256)}
-//     )`;
-//   });
-// }
+  blackButton.addEventListener("click", function () {
+    for (const cell of cells) {
+      cell.addEventListener("mouseover", function () {
+        cell.classList.add("active");
+        cell.style.backgroundColor = "black";
+      });
+    }
+  });
+
+  randomButton.addEventListener("click", function () {
+    for (const cell of cells) {
+      cell.addEventListener("mouseover", function () {
+        cell.classList.add("active");
+        cell.style.backgroundColor = `rgb(
+          ${Math.floor(Math.random() * 256)},
+          ${Math.floor(Math.random() * 256)},
+          ${Math.floor(Math.random() * 256)}
+        )`;
+      });
+    }
+  });
+
+  const clear = document.getElementById("clear-grid");
+
+  clear.addEventListener("click", function () {
+    for (const cell of cells) {
+      cell.classList.remove("active");
+      cell.style.backgroundColor = "white";
+    }
+  });
+};
