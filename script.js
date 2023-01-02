@@ -26,50 +26,68 @@ function makeColumns(cellNum) {
   }
 }
 
-const cells = document.getElementsByClassName("cell");
-const blackButton = document.getElementById("black-button");
-const randomButton = document.getElementById("random-button");
-
-blackButton.addEventListener("click", function () {
-  for (const cell of cells) {
-    cell.addEventListener("mouseover", function () {
-      cell.classList.add("active");
-      cell.style.backgroundColor = "black";
-    });
-  }
-});
-
-randomButton.addEventListener("click", function () {
-  for (const cell of cells) {
-    cell.addEventListener("mouseover", function () {
-      cell.classList.add("active");
-      cell.style.backgroundColor = `rgb(
-        ${Math.floor(Math.random() * 256)},
-        ${Math.floor(Math.random() * 256)},
-        ${Math.floor(Math.random() * 256)}
-      )`;
-    });
-  }
-});
-
 const size = document.getElementById("grid-size");
 
 size.addEventListener("click", function () {
-  let sizing = prompt("Enter a new grid size: (max: 100)");
+  let sizing = prompt("Enter a new grid size: (max: 64)");
   console.log(sizing);
 
-  if (!isNaN(sizing) && sizing < 100) {
-    console.log("good");
-    let errorMessasge = document.querySelector(".error");
+  let errorMessasge = document.querySelector(".error");
+  if (!isNaN(sizing) && sizing < 65) {
     if (errorMessasge) {
       main.removeChild(errorMessasge);
     }
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    makeRows(sizing);
+    makeColumns(sizing);
   } else {
-    console.log("Please enter a valid number under 100.");
-    const errorMessasge = document.createElement("p");
-    errorMessasge.classList.add("error");
-    errorMessasge.textContent = "Please enter a valid number under 100.";
-    errorMessasge.style.color = "red";
-    main.appendChild(errorMessasge);
+    console.log("Please enter a valid number under 65.");
+    if (!errorMessasge) {
+      const errorMessasge = document.createElement("p");
+      errorMessasge.classList.add("error");
+      errorMessasge.textContent = "Please enter a valid number under 100.";
+      errorMessasge.style.color = "red";
+      main.appendChild(errorMessasge);
+    }
   }
 });
+
+// Reset Canvas
+window.onload = function () {
+  const cells = document.getElementsByClassName("cell");
+  const blackButton = document.getElementById("black-button");
+  const randomButton = document.getElementById("random-button");
+
+  blackButton.addEventListener("click", function () {
+    for (const cell of cells) {
+      cell.addEventListener("mouseover", function () {
+        cell.classList.add("active");
+        cell.style.backgroundColor = "black";
+      });
+    }
+  });
+
+  randomButton.addEventListener("click", function () {
+    for (const cell of cells) {
+      cell.addEventListener("mouseover", function () {
+        cell.classList.add("active");
+        cell.style.backgroundColor = `rgb(
+          ${Math.floor(Math.random() * 256)},
+          ${Math.floor(Math.random() * 256)},
+          ${Math.floor(Math.random() * 256)}
+        )`;
+      });
+    }
+  });
+
+  const clear = document.getElementById("clear-grid");
+
+  clear.addEventListener("click", function () {
+    for (const cell of cells) {
+      cell.classList.remove("active");
+      cell.style.backgroundColor = "white";
+    }
+  });
+};
